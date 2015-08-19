@@ -24,10 +24,10 @@ js/tinymce/plugins/imagetools/plugin.js
 imagemanager
 filemanager
 mcmanager
-*.min.js
+# *.min.js
 *.dev.js
 *.full.js
-*.min.css
+# *.min.css
 *.dev.less
 skin.less
 skin.ie7.less
