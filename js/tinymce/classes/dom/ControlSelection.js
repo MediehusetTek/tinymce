@@ -142,6 +142,20 @@ define("tinymce/dom/ControlSelection", [
 				}
 			}
 
+			if (selectedElm.nodeName == "IMG" && editor.settings.allowed_image_widths !== undefined) {
+				var closestWidth = editor.settings.allowed_image_widths[0];
+
+				for (var i = 1;
+					i < editor.settings.allowed_image_widths.length &&
+					Math.abs(width/editor.settings.allowed_image_widths[i] -1) < Math.abs(width/closestWidth -1);
+					i++) {
+					closestWidth = editor.settings.allowed_image_widths[i];
+				}
+
+				width = closestWidth;
+				height = round(width * ratio);
+			}
+
 			// Update ghost size
 			dom.setStyles(selectedElmGhost, {
 				width: width,
@@ -600,7 +614,7 @@ define("tinymce/dom/ControlSelection", [
 				}
 			});
 
-			editor.on('hide blur', hideResizeRect);
+			editor.on('hide blur removeResizeHandles', hideResizeRect);
 
 			// Hide rect on focusout since it would float on top of windows otherwise
 			//editor.on('focusout', hideResizeRect);
