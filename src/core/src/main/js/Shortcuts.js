@@ -68,7 +68,7 @@ define(
         shortcut.id = id.join(',');
 
         // Handle special access modifier differently depending on Mac/Win
-        if (shortcut.access) {
+        if (shortcut.access && !editor.settings.shortcuts_backward_compatibility) {
           shortcut.alt = true;
 
           if (Env.mac) {
@@ -76,6 +76,10 @@ define(
           } else {
             shortcut.shift = true;
           }
+        } else if (shortcut.access && editor.settings.shortcuts_backward_compatibility) {
+          // Backwards compatibility: maps access back to meta
+          shortcut.access = false;
+          shortcut.meta = true;
         }
 
         // Handle special meta modifier differently depending on Mac/Win
