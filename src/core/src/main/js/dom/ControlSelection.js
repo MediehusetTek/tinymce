@@ -180,6 +180,21 @@ define(
           }
         }
 
+        if (selectedElm.nodeName == "IMG" && editor.settings.allowed_image_widths !== undefined) {
+          var allowedImageWidths = editor.settings.allowed_image_widths,
+            closestWidth = allowedImageWidths[0];
+
+          for (var i = 1;
+            i < allowedImageWidths.length &&
+              Math.abs(width / allowedImageWidths[i] - 1) < Math.abs(width / closestWidth - 1);
+            i++) {
+            closestWidth = allowedImageWidths[i];
+          }
+
+          width = closestWidth;
+          height = round(width * ratio);
+        }
+
         // Update ghost size
         dom.setStyles(selectedElmGhost, {
           width: width,
@@ -649,7 +664,7 @@ define(
           }
         });
 
-        editor.on('hide blur', hideResizeRect);
+        editor.on('hide blur removeResizeHandles', hideResizeRect);
         editor.on('contextmenu', Fun.curry(contextMenuSelectImage, editor));
 
         // Hide rect on focusout since it would float on top of windows otherwise
